@@ -1,0 +1,5 @@
+key.txt
+node_modules/
+.s/
+*.log
+Thumbs.db

@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>留言反馈</title>
+    <link rel="stylesheet" href="assets/common.css">
+    <link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <style>
+        .feedback-grid {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) minmax(280px, 0.72fr);
+            gap: 1.5rem;
+            padding-bottom: 3.5rem;
+        }
+
+        .feedback-card {
+            padding: 1.6rem;
+        }
+
+        .feature-list {
+            display: grid;
+            gap: 0.9rem;
+        }
+
+        .feature-item {
+            padding: 1rem 1.1rem;
+            border-radius: var(--radius-lg);
+            background: rgba(230, 192, 136, 0.06);
+            border: 1px solid rgba(230, 192, 136, 0.14);
+        }
+
+        .feature-item strong {
+            display: block;
+            color: var(--gold-strong);
+            margin-bottom: 0.25rem;
+        }
+
+        @media (max-width: 980px) {
+            .feedback-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body data-page="feedback">
+    <div class="page-shell">
+        <header class="site-header">
+            <div class="nav-bar">
+                <a class="brand" href="index.html">
+                    <span class="brand-mark">傩</span>
+                    <span class="brand-text">
+                        <span class="brand-title">傩舞文化</span>
+                        <span class="brand-note">Heritage Studio</span>
+                    </span>
+                </a>
+                <nav class="primary-nav">
+                    <a href="index.html" data-nav="home">首页</a>
+                    <a href="diy.html" data-nav="diy">DIY设计</a>
+                    <a href="works.html" data-nav="works">作品展示</a>
+                    <a href="feedback.html" data-nav="feedback">留言反馈</a>
+                </nav>
+                <div class="user-actions">
+                    <a class="user-pill" href="login.html" data-user-link>登录 / 注册</a>
+                    <button class="logout-link hidden" type="button" data-logout-link>退出登录</button>
+                </div>
+            </div>
+            <div class="sub-nav">
+                <div class="sub-nav-inner">
+                    <a href="index.html#intro">文化介绍</a>
+                    <a href="index.html#mask-gallery">面具图鉴</a>
+                    <a href="index.html#costume-gallery">傩舞服饰</a>
+                    <a href="index.html#accessory-gallery">服饰配饰</a>
+                    <a href="index.html#inheritor-gallery">传承人档案</a>
+                </div>
+            </div>
+        </header>
+
+        <main class="page-main">
+            <section class="page-intro">
+                <p class="eyebrow">Feedback</p>
+                <h1>留言反馈与合作沟通</h1>
+                <p>如果你对面具图鉴、服饰配饰、创作体验或页面内容有建议，欢迎在这里留言。</p>
+            </section>
+
+            <section class="feedback-grid">
+                <article class="panel feedback-card">
+                    <form action="https://formsubmit.co/2479161761@qq.com" method="POST" target="_blank">
+                        <div class="field-group">
+                            <label class="field-label" for="feedback-name">称呼</label>
+                            <input class="field-input" id="feedback-name" name="name" type="text" placeholder="如何称呼你">
+                        </div>
+                        <div class="field-group">
+                            <label class="field-label" for="feedback-email">联系方式</label>
+                            <input class="field-input" id="feedback-email" name="email" type="email" placeholder="邮箱或常用联系方式">
+                        </div>
+                        <div class="field-group">
+                            <label class="field-label" for="feedback-type">反馈类型</label>
+                            <select class="field-select" id="feedback-type" name="type">
+                                <option value="功能建议">功能建议</option>
+                                <option value="问题反馈">问题反馈</option>
+                                <option value="合作咨询">合作咨询</option>
+                                <option value="内容建议">内容建议</option>
+                            </select>
+                        </div>
+                        <div class="field-group">
+                            <label class="field-label" for="feedback-message">留言内容</label>
+                            <textarea class="field-textarea" id="feedback-message" name="message" required placeholder="请写下你的建议、问题或合作想法。"></textarea>
+                        </div>
+                        <input type="hidden" name="_subject" value="【傩舞文化数字展馆】新留言通知">
+                        <input type="hidden" name="_template" value="table">
+                        <input type="hidden" name="_captcha" value="false">
+                        <div class="btn-row">
+                            <button class="btn" type="submit"><i class="fa-regular fa-paper-plane"></i> 提交留言</button>
+                            <a class="btn-secondary" href="diy.html"><i class="fa-solid fa-pen-ruler"></i> 去创作页看看</a>
+                        </div>
+                    </form>
+                </article>
+
+                <aside class="feature-list">
+                    <article class="feature-item">
+                        <strong>适合收集哪类意见</strong>
+                        <span class="muted-text">首页结构、AI 生成体验、作品流程、定制表单、页面视觉统一等都可以直接反馈。</span>
+                    </article>
+                    <article class="feature-item">
+                        <strong>后续可扩展方向</strong>
+                        <span class="muted-text">如果后面接入云端账号和正式定制工单系统，这个页面可以无缝升级为客服与合作中心。</span>
+                    </article>
+                </aside>
+            </section>
+        </main>
+
+        <footer class="site-footer">
+            留言反馈
+        </footer>
+    </div>
+
+    <script src="assets/common.js"></script>
+</body>
+</html>

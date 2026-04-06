@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DIY 创作台</title>
+    <link rel="stylesheet" href="assets/common.css">
+    <link rel="stylesheet" href="assets/diy.css">
+    <link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+</head>
+<body data-page="diy">
+    <div class="page-shell">
+        <header class="site-header">
+            <div class="nav-bar">
+                <a class="brand" href="index.html">
+                    <span class="brand-mark">傩</span>
+                    <span class="brand-text">
+                        <span class="brand-title">傩舞文化</span>
+                        <span class="brand-note">Heritage Studio</span>
+                    </span>
+                </a>
+                <nav class="primary-nav">
+                    <a href="index.html" data-nav="home">首页</a>
+                    <a href="diy.html" data-nav="diy">DIY设计</a>
+                    <a href="works.html" data-nav="works">作品展示</a>
+                    <a href="feedback.html" data-nav="feedback">留言反馈</a>
+                </nav>
+                <div class="user-actions">
+                    <a class="user-pill" href="login.html" data-user-link>登录 / 注册</a>
+                    <button class="logout-link hidden" type="button" data-logout-link>退出登录</button>
+                </div>
+            </div>
+            <div class="sub-nav">
+                <div class="sub-nav-inner">
+                    <a href="index.html#intro">文化介绍</a>
+                    <a href="index.html#mask-gallery">面具图鉴</a>
+                    <a href="index.html#costume-gallery">傩舞服饰</a>
+                    <a href="index.html#accessory-gallery">服饰配饰</a>
+                    <a href="index.html#inheritor-gallery">传承人档案</a>
+                </div>
+            </div>
+        </header>
+
+        <main class="page-main">
+            <section class="page-intro">
+                <p class="eyebrow">DIY Studio</p>
+                <h1>非遗傩面具 / 服饰自由创作台</h1>
+                <p>输入描述词即可生成傩面具、服饰或配饰灵感图，并可继续在画布上自由编辑。</p>
+            </section>
+
+            <section class="panel ai-panel" id="ai-studio">
+                <div class="ai-layout">
+                    <div class="tool-grid">
+                        <h2 class="tool-title">AI 智能生成傩面具 / 服饰</h2>
+                        <div class="prompt-tags">
+                            <button class="tag-btn" type="button" data-prompt="红色傩面具，金色纹饰，威严神将风格">红色傩面具</button>
+                            <button class="tag-btn" type="button" data-prompt="金色武将面具，厚重眉眼，仪式感强">金色武将面具</button>
+                            <button class="tag-btn" type="button" data-prompt="凤纹傩服，宽袖设计，华丽且古朴">凤纹傩服</button>
+                            <button class="tag-btn" type="button" data-prompt="绸缎腰带与铜铃挂件，舞步动态明显">绸缎腰带</button>
+                            <button class="tag-btn" type="button" data-prompt="黑金王灵官风格，三目神将，护法气质">王灵官风格</button>
+                        </div>
+                        <div class="field-group">
+                            <label class="field-label" for="prompt-input">自定义提示词</label>
+                            <textarea class="field-textarea" id="prompt-input" placeholder="描述你想要的傩面具 / 服饰 / 配饰风格，例如：传统非遗傩面具，红色主色调，金色花纹，武将气质，搭配铜铃和绸缎腰带。"></textarea>
+                        </div>
+                        <div class="two-col split-grid">
+                            <div class="field-group">
+                                <label class="field-label" for="ai-size">生成比例</label>
+                                <select class="field-select" id="ai-size">
+                                    <option value="1024x1024">方形 1:1</option>
+                                    <option value="1536x1024">横向 3:2</option>
+                                    <option value="1024x1536">竖向 2:3</option>
+                                </select>
+                            </div>
+                            <div class="field-group">
+                                <label class="field-label" for="work-title">作品标题</label>
+                                <input class="field-input" id="work-title" type="text" placeholder="例如：王灵官护法面">
+                            </div>
+                        </div>
+                        <div class="btn-row">
+                            <button class="btn" id="generate-btn" type="button"><i class="fa-solid fa-wand-magic-sparkles"></i> 生成图片</button>
+                            <button class="btn-secondary" id="apply-preview-btn" type="button"><i class="fa-solid fa-image"></i> 应用到画布</button>
+                        </div>
+                        <div class="status-box" id="ai-status">输入提示词后点击“生成图片”。</div>
+                    </div>
+
+                    <aside class="ai-preview">
+                        <div class="preview-frame">
+                            <div class="preview-empty" id="preview-empty">生成结果会显示在这里。</div>
+                            <img src="" alt="AI 生成预览" id="preview-image" class="hidden">
+                        </div>
+                    </aside>
+                </div>
+            </section>
+
+            <section class="diy-grid">
+                <article class="panel canvas-panel">
+                    <div class="canvas-meta">
+                        <div class="meta-line">
+                            <span class="badge" id="edit-state">当前状态：新作品</span>
+                            <span class="badge" id="source-state">来源：手工创作</span>
+                        </div>
+                        <p class="muted-text">支持鼠标或触控手绘，可在生成结果上继续自由创作。</p>
+                    </div>
+                    <div class="canvas-frame">
+                        <canvas id="design-canvas" width="1200" height="720"></canvas>
+                    </div>
+                </article>
+
+                <aside class="tool-stack">
+                    <article class="panel tool-panel">
+                        <div class="tool-grid">
+                            <h2 class="tool-title">绘制设置</h2>
+                            <div class="color-grid">
+                                <button class="color-btn active" type="button" data-color="#3a170e" style="background:#3a170e;"></button>
+                                <button class="color-btn" type="button" data-color="#8b3f28" style="background:#8b3f28;"></button>
+                                <button class="color-btn" type="button" data-color="#e6c088" style="background:#e6c088;"></button>
+                                <button class="color-btn" type="button" data-color="#d73f22" style="background:#d73f22;"></button>
+                                <button class="color-btn" type="button" data-color="#244f8f" style="background:#244f8f;"></button>
+                                <button class="color-btn" type="button" data-color="#0f7a5d" style="background:#0f7a5d;"></button>
+                                <button class="color-btn" type="button" data-color="#f7f2ea" style="background:#f7f2ea;"></button>
+                            </div>
+                            <div class="range-row">
+                                <label class="field-label" for="brush-size">画笔大小：<span id="brush-size-value">6</span> px</label>
+                                <input id="brush-size" type="range" min="1" max="36" value="6">
+                            </div>
+                            <button class="btn-secondary" id="undo-btn" type="button"><i class="fa-solid fa-rotate-left"></i> 撤销上一步</button>
+                        </div>
+                    </article>
+
+                    <article class="panel tool-panel">
+                        <div class="tool-grid">
+                            <h2 class="tool-title">模板与素材</h2>
+                            <button class="btn-secondary" id="mask-template-btn" type="button"><i class="fa-solid fa-mask-face"></i> 绘制面具模板</button>
+                            <button class="btn-secondary" id="clothes-template-btn" type="button"><i class="fa-solid fa-shirt"></i> 绘制服饰模板</button>
+                            <button class="btn-secondary" id="accessory-template-btn" type="button"><i class="fa-solid fa-ribbon"></i> 绘制配饰模板</button>
+                            <label class="upload-label">
+                                <input type="file" id="upload-input" accept=".png,.jpg,.jpeg,.webp">
+                                <span><i class="fa-solid fa-cloud-arrow-up"></i><br>上传参考图 / 本地素材</span>
+                            </label>
+                            <button class="btn-secondary" id="clear-btn" type="button"><i class="fa-regular fa-trash-can"></i> 清空画布</button>
+                        </div>
+                    </article>
+
+                    <article class="panel tool-panel">
+                        <div class="tool-grid">
+                            <h2 class="tool-title">作品流程</h2>
+                            <div class="field-group">
+                                <label class="field-label" for="download-scale">下载分辨率</label>
+                                <select class="field-select" id="download-scale">
+                                    <option value="1">标准 1x</option>
+                                    <option value="2">高清 2x</option>
+                                    <option value="3">展示 3x</option>
+                                </select>
+                            </div>
+                            <button class="btn" id="save-btn" type="button"><i class="fa-regular fa-floppy-disk"></i> 保存到作品库</button>
+                            <button class="btn-secondary" id="download-btn" type="button"><i class="fa-solid fa-download"></i> 下载当前作品</button>
+                            <a class="btn-secondary" href="works.html"><i class="fa-regular fa-images"></i> 前往作品库</a>
+                        </div>
+                    </article>
+                </aside>
+            </section>
+        </main>
+
+        <footer class="site-footer">
+            DIY 创作台 · 生成、编辑、保存与下载
+        </footer>
+    </div>
+
+    <script src="assets/common.js"></script>
+    <script src="assets/runtime-config.js"></script>
+    <script src="assets/diy.js"></script>
+</body>
+</html>

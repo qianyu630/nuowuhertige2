@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>登录 / 注册</title>
+    <link rel="stylesheet" href="assets/common.css">
+    <link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <style>
+        .login-grid {
+            display: grid;
+            grid-template-columns: minmax(0, 1.05fr) minmax(320px, 0.95fr);
+            gap: 1.5rem;
+            padding-bottom: 3.5rem;
+        }
+
+        .tabs {
+            display: flex;
+            gap: 0.75rem;
+            margin-bottom: 1.25rem;
+        }
+
+        .tab-btn {
+            flex: 1;
+            min-height: 48px;
+            border-radius: 999px;
+            cursor: pointer;
+            border: 1px solid rgba(230, 192, 136, 0.25);
+            background: rgba(230, 192, 136, 0.06);
+            color: var(--cream);
+            transition: 0.25s ease;
+        }
+
+        .tab-btn.active {
+            background: linear-gradient(135deg, rgba(230, 192, 136, 0.92), rgba(197, 135, 78, 0.92));
+            color: var(--bg-ink);
+            border-color: transparent;
+        }
+
+        .form-card {
+            padding: 1.5rem;
+        }
+
+        .form-box {
+            display: none;
+            gap: 1rem;
+        }
+
+        .form-box.active {
+            display: grid;
+        }
+
+        .sync-box {
+            display: grid;
+            gap: 1rem;
+            align-content: start;
+        }
+
+        .sync-output {
+            min-height: 180px;
+            font-family: "Consolas", "Courier New", monospace;
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+
+        .status-panel {
+            padding: 1.1rem 1.2rem;
+            border-radius: var(--radius-lg);
+            background: rgba(230, 192, 136, 0.06);
+            border: 1px solid rgba(230, 192, 136, 0.16);
+            color: var(--cream-soft);
+        }
+
+        @media (max-width: 980px) {
+            .login-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body data-page="login">
+    <div class="page-shell">
+        <header class="site-header">
+            <div class="nav-bar">
+                <a class="brand" href="index.html">
+                    <span class="brand-mark">傩</span>
+                    <span class="brand-text">
+                        <span class="brand-title">傩舞文化</span>
+                        <span class="brand-note">Heritage Studio</span>
+                    </span>
+                </a>
+                <nav class="primary-nav">
+                    <a href="index.html" data-nav="home">首页</a>
+                    <a href="diy.html" data-nav="diy">DIY设计</a>
+                    <a href="works.html" data-nav="works">作品展示</a>
+                    <a href="feedback.html" data-nav="feedback">留言反馈</a>
+                </nav>
+                <div class="user-actions">
+                    <a class="user-pill" href="login.html" data-user-link>登录 / 注册</a>
+                    <button class="logout-link hidden" type="button" data-logout-link>退出登录</button>
+                </div>
+            </div>
+            <div class="sub-nav">
+                <div class="sub-nav-inner">
+                    <a href="index.html#intro">文化介绍</a>
+                    <a href="index.html#mask-gallery">面具图鉴</a>
+                    <a href="index.html#costume-gallery">傩舞服饰</a>
+                    <a href="index.html#accessory-gallery">服饰配饰</a>
+                    <a href="index.html#inheritor-gallery">传承人档案</a>
+                </div>
+            </div>
+        </header>
+
+        <main class="page-main">
+            <section class="page-intro">
+                <p class="eyebrow">Login / Register</p>
+                <h1>登录与注册</h1>
+                <p>登录后可进入创作页面，保存作品、继续编辑并查看自己的作品展示。</p>
+            </section>
+
+            <section class="login-grid">
+                <article class="panel form-card">
+                    <div class="tabs">
+                        <button class="tab-btn active" data-target="login-box" type="button">登录</button>
+                        <button class="tab-btn" data-target="register-box" type="button">注册</button>
+                    </div>
+
+                    <form class="form-box active" id="login-box">
+                        <div class="field-group">
+                            <label class="field-label" for="login-username">用户名</label>
+                            <input class="field-input" id="login-username" type="text" placeholder="请输入用户名">
+                        </div>
+                        <div class="field-group">
+                            <label class="field-label" for="login-password">密码</label>
+                            <input class="field-input" id="login-password" type="password" placeholder="请输入密码">
+                        </div>
+                        <button class="btn" type="submit"><i class="fa-solid fa-right-to-bracket"></i> 登录并进入 DIY</button>
+                        <p class="field-note">登录后可使用 AI 生成、保存作品、继续编辑、下载和定制入口。</p>
+                    </form>
+
+                    <form class="form-box" id="register-box">
+                        <div class="field-group">
+                            <label class="field-label" for="register-username">用户名</label>
+                            <input class="field-input" id="register-username" type="text" placeholder="设置一个易记用户名">
+                        </div>
+                        <div class="field-group">
+                            <label class="field-label" for="register-password">密码</label>
+                            <input class="field-input" id="register-password" type="password" placeholder="设置登录密码">
+                        </div>
+                        <button class="btn" type="submit"><i class="fa-solid fa-user-plus"></i> 注册并进入 DIY</button>
+                        <p class="field-note">注册完成后即可进入创作页面。</p>
+                    </form>
+                </article>
+
+                <aside class="sync-box">
+                    <article class="panel">
+                        <h2 class="section-title" style="font-size: 1.6rem;">数据迁移</h2>
+                        <p class="muted-text">如需在其他设备恢复账号与作品，可使用迁移码导出和导入数据。</p>
+                        <div class="status-panel" id="current-account-status">当前未登录。</div>
+                    </article>
+
+                    <article class="panel">
+                        <div class="field-group">
+                            <label class="field-label" for="sync-output">导出迁移码</label>
+                            <textarea class="field-textarea sync-output" id="sync-output" placeholder="登录后可在这里生成迁移码。"></textarea>
+                        </div>
+                        <div class="btn-row">
+                            <button class="btn" id="generate-sync-btn" type="button"><i class="fa-solid fa-barcode"></i> 生成迁移码</button>
+                            <button class="btn-secondary" id="copy-sync-btn" type="button"><i class="fa-regular fa-copy"></i> 复制</button>
+                        </div>
+                    </article>
+
+                    <article class="panel">
+                        <div class="field-group">
+                            <label class="field-label" for="sync-input">导入迁移码</label>
+                            <textarea class="field-textarea sync-output" id="sync-input" placeholder="在这里粘贴迁移码。"></textarea>
+                        </div>
+                        <div class="btn-row">
+                            <button class="btn" id="import-sync-btn" type="button"><i class="fa-solid fa-file-import"></i> 导入并登录</button>
+                            <a class="btn-secondary" href="works.html"><i class="fa-solid fa-images"></i> 查看作品库</a>
+                        </div>
+                    </article>
+                </aside>
+            </section>
+        </main>
+
+        <footer class="site-footer">
+            登录后可保存作品并进入个人作品展示。
+        </footer>
+    </div>
+
+    <script src="assets/common.js"></script>
+    <script>
+        const tabs = document.querySelectorAll(".tab-btn");
+        const forms = document.querySelectorAll(".form-box");
+        const accountStatus = document.getElementById("current-account-status");
+
+        function refreshAccountStatus() {
+            const user = NuowuApp.getCurrentUser();
+            accountStatus.textContent = user
+                ? `当前账号：${user.username}`
+                : "当前未登录。";
+            NuowuApp.updateHeaderState();
+        }
+
+        tabs.forEach((tab) => {
+            tab.addEventListener("click", () => {
+                tabs.forEach((item) => item.classList.remove("active"));
+                forms.forEach((item) => item.classList.remove("active"));
+                tab.classList.add("active");
+                document.getElementById(tab.dataset.target).classList.add("active");
+            });
+        });
+
+        document.getElementById("login-box").addEventListener("submit", (event) => {
+            event.preventDefault();
+            try {
+                NuowuApp.loginLocalUser(
+                    document.getElementById("login-username").value,
+                    document.getElementById("login-password").value
+                );
+                refreshAccountStatus();
+                alert("登录成功，正在进入 DIY 设计页。");
+                window.location.href = "diy.html";
+            } catch (error) {
+                alert(error.message);
+            }
+        });
+
+        document.getElementById("register-box").addEventListener("submit", (event) => {
+            event.preventDefault();
+            try {
+                NuowuApp.registerLocalUser(
+                    document.getElementById("register-username").value,
+                    document.getElementById("register-password").value
+                );
+                refreshAccountStatus();
+                alert("注册成功，正在进入 DIY 设计页。");
+                window.location.href = "diy.html";
+            } catch (error) {
+                alert(error.message);
+            }
+        });
+
+        document.getElementById("generate-sync-btn").addEventListener("click", () => {
+            const user = NuowuApp.getCurrentUser();
+            if (!user) {
+                alert("请先登录后再生成迁移码。");
+                return;
+            }
+            try {
+                document.getElementById("sync-output").value = NuowuApp.buildSyncPack(user.username);
+                alert("迁移码已生成。");
+            } catch (error) {
+                alert(error.message);
+            }
+        });
+
+        document.getElementById("copy-sync-btn").addEventListener("click", async () => {
+            const output = document.getElementById("sync-output").value.trim();
+            if (!output) {
+                alert("请先生成迁移码。");
+                return;
+            }
+            try {
+                await NuowuApp.copyText(output);
+                alert("已复制。");
+            } catch (error) {
+                alert("复制失败，请手动复制文本框内容。");
+            }
+        });
+
+        document.getElementById("import-sync-btn").addEventListener("click", () => {
+            const value = document.getElementById("sync-input").value.trim();
+            if (!value) {
+                alert("请先粘贴迁移码。");
+                return;
+            }
+            try {
+                const payload = NuowuApp.importSyncPack(value);
+                refreshAccountStatus();
+                alert(`导入成功，当前账号：${payload.user.username}`);
+                window.location.href = "works.html";
+            } catch (error) {
+                alert("导入失败，请检查迁移码。");
+            }
+        });
+
+        refreshAccountStatus();
+    </script>
+</body>
+</html>

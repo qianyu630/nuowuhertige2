@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>傩舞文化数字展馆</title>
+    <link rel="stylesheet" href="assets/common.css">
+    <link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <style>
+        #splash-screen {
+            position: fixed;
+            inset: 0;
+            z-index: 300;
+            display: grid;
+            place-items: center;
+            background:
+                linear-gradient(180deg, rgba(29, 11, 7, 0.72), rgba(72, 29, 18, 0.82)),
+                url("https://hertige-nuowu.oss-cn-hangzhou.aliyuncs.com/splash-bg.jpg") center/cover no-repeat;
+            transition: opacity 0.75s ease, visibility 0.75s ease;
+        }
+
+        #splash-screen.hidden {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+        }
+
+        .splash-card {
+            width: min(760px, 88vw);
+            padding: 3.2rem 2.2rem;
+            text-align: center;
+            border-radius: 32px;
+            background: linear-gradient(180deg, rgba(74, 28, 18, 0.75), rgba(32, 12, 8, 0.9));
+            border: 1px solid rgba(230, 192, 136, 0.28);
+            box-shadow: 0 28px 70px rgba(12, 5, 3, 0.42);
+            backdrop-filter: blur(8px);
+        }
+
+        .splash-title {
+            margin: 0 0 0.8rem;
+            font-size: clamp(3rem, 8vw, 5.8rem);
+            letter-spacing: 0.18em;
+            color: var(--gold-strong);
+        }
+
+        .splash-copy {
+            margin: 0 auto 2rem;
+            max-width: 520px;
+            color: var(--cream-soft);
+            font-size: 1.05rem;
+        }
+
+        #home-shell {
+            display: none;
+        }
+
+        #home-shell.ready {
+            display: flex;
+        }
+
+        .hero-section {
+            padding: 3rem 0 1rem;
+            display: grid;
+            gap: 1.5rem;
+        }
+
+        .hero-panel {
+            padding: 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-panel::after {
+            content: "";
+            position: absolute;
+            inset: auto -120px -120px auto;
+            width: 280px;
+            height: 280px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(230, 192, 136, 0.18), transparent 70%);
+        }
+
+        .hero-copy {
+            max-width: 720px;
+            font-size: 1.08rem;
+        }
+
+        .hero-highlight {
+            padding: 1.25rem 1.4rem;
+            border-radius: var(--radius-lg);
+            background: rgba(230, 192, 136, 0.08);
+            border: 1px solid rgba(230, 192, 136, 0.18);
+            display: grid;
+            gap: 0.95rem;
+        }
+
+        .hero-highlight h2 {
+            margin: 0;
+            color: var(--gold-strong);
+            font-size: 1.4rem;
+        }
+
+        .hero-highlight ul {
+            margin: 0;
+            padding-left: 1.2rem;
+            color: var(--cream-soft);
+        }
+
+        .story-grid {
+            display: grid;
+            grid-template-columns: minmax(0, 1.25fr) minmax(280px, 0.8fr);
+            gap: 1.5rem;
+        }
+
+        .story-panel {
+            padding: 1.6rem;
+            border-radius: var(--radius-xl);
+            background: rgba(230, 192, 136, 0.05);
+            border: 1px solid rgba(230, 192, 136, 0.14);
+        }
+
+        .story-panel p {
+            margin: 0;
+            color: var(--cream-soft);
+        }
+
+        .quote-card {
+            display: grid;
+            gap: 0.9rem;
+            align-content: start;
+        }
+
+        .quote-card strong {
+            color: var(--gold-strong);
+            font-size: 1.25rem;
+        }
+
+        .collection-grid .card-media {
+            aspect-ratio: 4 / 4.8;
+        }
+
+        .modal-body p {
+            margin: 0;
+            color: var(--cream-soft);
+        }
+
+        @media (max-width: 980px) {
+            .story-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body data-page="home">
+    <div id="splash-screen">
+        <div class="splash-card">
+            <p class="eyebrow">China Nuo Culture</p>
+            <h1 class="splash-title">千年傩韵</h1>
+            <p class="splash-copy">不止浏览非遗，更能亲手创作专属傩作。我们把面具、服饰、配饰、传承人和 DIY 创作流程整合进同一个数字展馆。</p>
+            <button class="btn" id="enter-btn"><i class="fa-solid fa-fire"></i> 进入傩舞世界</button>
+        </div>
+    </div>
+
+    <div class="page-shell" id="home-shell">
+        <header class="site-header">
+            <div class="nav-bar">
+                <a class="brand" href="index.html">
+                    <span class="brand-mark">傩</span>
+                    <span class="brand-text">
+                        <span class="brand-title">傩舞文化</span>
+                        <span class="brand-note">Heritage Studio</span>
+                    </span>
+                </a>
+                <nav class="primary-nav">
+                    <a href="index.html" data-nav="home">首页</a>
+                    <a href="diy.html" data-nav="diy">DIY设计</a>
+                    <a href="works.html" data-nav="works">作品展示</a>
+                    <a href="feedback.html" data-nav="feedback">留言反馈</a>
+                </nav>
+                <div class="user-actions">
+                    <a class="user-pill" href="login.html" data-user-link>登录 / 注册</a>
+                    <button class="logout-link hidden" type="button" data-logout-link>退出登录</button>
+                </div>
+            </div>
+            <div class="sub-nav">
+                <div class="sub-nav-inner">
+                    <a href="#intro">文化介绍</a>
+                    <a href="#mask-gallery">面具图鉴</a>
+                    <a href="#costume-gallery">傩舞服饰</a>
+                    <a href="#accessory-gallery">服饰配饰</a>
+                    <a href="#inheritor-gallery">传承人档案</a>
+                </div>
+            </div>
+        </header>
+
+        <main class="page-main">
+            <section class="hero-section">
+                <div class="hero-panel hero-grid">
+                    <div class="panel" style="background: transparent; border: none; box-shadow: none; padding: 0;">
+                        <p class="eyebrow">Nuo Culture Digital Gallery</p>
+                        <h1 class="hero-title">不止浏览非遗，更能亲手创作专属傩作</h1>
+                        <p class="hero-copy">在这里，可以浏览傩舞面具、服饰、配饰与传承人资料，也可以进入创作页面生成并设计属于自己的傩作。</p>
+                        <div class="metric-row" style="margin: 1.5rem 0;">
+                            <div class="metric">
+                                <span class="metric-value">13</span>
+                                <span class="metric-label">面具图鉴</span>
+                            </div>
+                            <div class="metric">
+                                <span class="metric-value">9</span>
+                                <span class="metric-label">傩舞服饰</span>
+                            </div>
+                            <div class="metric">
+                                <span class="metric-value">5</span>
+                                <span class="metric-label">配饰模块</span>
+                            </div>
+                            <div class="metric">
+                                <span class="metric-value">4</span>
+                                <span class="metric-label">传承人档案</span>
+                            </div>
+                        </div>
+                        <div class="btn-row">
+                            <a class="btn" href="diy.html"><i class="fa-solid fa-pen-ruler"></i> 开始 DIY 创作</a>
+                            <a class="btn-secondary" href="diy.html#ai-studio"><i class="fa-solid fa-wand-magic-sparkles"></i> 前往 AI 生成</a>
+                            <a class="btn-secondary" href="feedback.html"><i class="fa-regular fa-message"></i> 留言反馈</a>
+                        </div>
+                    </div>
+                    <aside class="hero-highlight">
+                        <h2>首页副导航已加入</h2>
+                        <div class="chip-row">
+                            <span class="chip"><i class="fa-solid fa-compass"></i> 锚点速达</span>
+                            <span class="chip"><i class="fa-solid fa-shirt"></i> 配饰入口</span>
+                            <span class="chip"><i class="fa-solid fa-images"></i> 创作体验</span>
+                        </div>
+                        <ul>
+                            <li>主导航连接各功能页面，副导航可快速跳转到内容板块。</li>
+                            <li>新增“服饰配饰”内容，与服饰板块形成完整形象体系。</li>
+                            <li>首页可以直接进入创作、浏览与互动反馈。</li>
+                        </ul>
+                    </aside>
+                </div>
+            </section>
+
+            <section class="section-block" id="intro">
+                <div class="section-head">
+                    <p class="eyebrow">文化介绍</p>
+                    <h2 class="section-title">从祭仪表演到数字创作，傩舞仍在当代生长</h2>
+                    <p class="section-desc">傩舞源于古老祭祀仪式，以面具、服饰、唱腔、动作共同构成一套完整的礼仪美学。今天，我们把它拆解为可浏览、可学习、可创作的数字内容，让年轻用户通过互动方式重新接近非遗。</p>
+                </div>
+                <div class="story-grid">
+                    <div class="story-panel">
+                        <p>面具承载人物性格与驱邪寓意，服饰强调身份、仪式与地域纹样，配饰则为表演增加动作感、声响感和礼仪层次。首页现在将三者拆开呈现，观众不用再靠文字想象，就能直观看到“整套傩作”的构成方式。</p>
+                    </div>
+                    <div class="story-panel quote-card">
+                        <strong>设计目标</strong>
+                        <span class="muted-text">把“浏览文化资料”升级成“理解文化结构 + 立即开始创作”的体验。</span>
+                        <div class="chip-row">
+                            <span class="chip">内容可读</span>
+                            <span class="chip">流程完整</span>
+                        <span class="chip">互动体验</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="section-block" id="mask-gallery">
+                <div class="section-head">
+                    <p class="eyebrow">面具图鉴</p>
+                    <h2 class="section-title">傩面具图鉴</h2>
+                    <p class="section-desc">点击任意卡片可查看人物定位、文化寓意与造型特征，适合展示面具在仪式、戏剧与民俗中的多重身份。</p>
+                </div>
+                <div class="grid card-grid collection-grid" id="mask-grid"></div>
+            </section>
+
+            <section class="section-block" id="costume-gallery">
+                <div class="section-head">
+                    <p class="eyebrow">服饰系统</p>
+                    <h2 class="section-title">傩舞服饰</h2>
+                    <p class="section-desc">服饰内容从角色气质、纹样语言与仪式氛围出发，呈现傩舞形象中的服装层次。</p>
+                </div>
+                <div class="grid card-grid collection-grid" id="costume-grid"></div>
+            </section>
+
+            <section class="section-block" id="accessory-gallery">
+                <div class="section-head">
+                    <p class="eyebrow">配饰系统</p>
+                    <h2 class="section-title">服饰配饰</h2>
+                    <p class="section-desc">配饰板块集中展示耳饰、头饰、绸缎腰带、铜铃挂件、护腕等典型元素，补足完整的表演造型细节。</p>
+                </div>
+                <div class="grid card-grid collection-grid" id="accessory-grid"></div>
+            </section>
+
+            <section class="section-block" id="inheritor-gallery">
+                <div class="section-head">
+                    <p class="eyebrow">传承人档案</p>
+                    <h2 class="section-title">非遗传承人档案库</h2>
+                    <p class="section-desc">通过人物生平、代表性成就与地区传承脉络，让文化内容不只停留在“物”，也看到“人”的接续。</p>
+                </div>
+                <div class="grid card-grid collection-grid" id="inheritor-grid"></div>
+            </section>
+        </main>
+
+        <footer class="site-footer">
+            中国非遗数字展馆 · 傩舞面具、服饰、配饰与创作体验
+        </footer>
+    </div>
+
+    <div class="modal" id="detail-modal">
+        <div class="modal-panel">
+            <button class="modal-close" type="button" id="close-detail-modal">×</button>
+            <div class="modal-layout">
+                <div class="modal-media">
+                    <img src="" alt="" id="detail-image">
+                </div>
+                <div class="modal-body">
+                    <div class="badge" id="detail-badge"></div>
+                    <h3 class="modal-title" id="detail-title"></h3>
+                    <p id="detail-summary"></p>
+                    <div class="modal-card">
+                        <strong id="detail-feature-title">文化寓意</strong>
+                        <p id="detail-feature"></p>
+                    </div>
+                    <div class="modal-card hidden" id="detail-extra-card">
+                        <strong id="detail-extra-title">更多信息</strong>
+                        <p id="detail-extra"></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="assets/common.js"></script>
+    <script>
+        const maskData = [
+            { title: "周将军", badge: "镇邪护宅", img: "https://hertige-nuowu.oss-cn-hangzhou.aliyuncs.com/zhoujiangjun.jpg", summary: "武将气质强烈，常用于突出刚正、驱邪与守护的角色形象。", featureTitle: "面具特征", feature: "怒目、厚眉与夸张牙口形成强烈威慑感，适合在仪式开场或关键段落承担镇场作用。", extraTitle: "适合讲解", extra: "可以和武将服、铜铃、护腕一起讲，形成完整角色系统。" },
+            { title: "钟馗", badge: "驱鬼纳福", img: "https://hertige-nuowu.oss-cn-hangzhou.aliyuncs.com/zhongkui.jpg", summary: "民间最具辨识度的驱邪形象之一，在傩舞中经常承担压轴角色。", featureTitle: "文化寓意", feature: "红色与黑色对比鲜明，强调威严、力量与护佑家宅的民俗期待。" },
+            { title: "判神", badge: "明辨善恶", img: "https://hertige-nuowu.oss-cn-hangzhou.aliyuncs.com/panshen.jpg", summary: "角色设定偏向裁决与秩序，适合用来讲“仪式中的公正观念”。", featureTitle: "造型亮点", feature: "常以强烈的面部分区和官职象征强化身份，体现神判和礼制感。" },
+            { title: "包公傩面", badge: "清正廉明", img: "https://hertige-nuowu.oss-cn-hangzhou.aliyuncs.com/baogong.jpg", summary: "借历史人物进入傩戏系统，是“人物神格化”的典型案例。", featureTitle: "讲述重点", feature: "黑白分明的脸谱感容易让观众理解“正义”“执法”“护民”这些文化主题。" },
+            { title: "财神", badge: "纳吉迎祥", img: "https://hertige-nuowu.oss-cn-hangzhou.aliyuncs.com/caisi.jpg", summary: "喜庆感和节庆感最强，适合和春节、祈福等展示情境关联。", featureTitle: "视觉语言", feature: "金色为主、笑口常开，强调富足、祥和与民众对美好生活的期待。" },
+            { title: "霸王", badge: "王者威仪", img: "https://hertige-nuowu.oss-cn-hangzhou.aliyuncs.com/bawang.jpg", summary: "角色往往肩负强势、护场和压阵的叙事功能。", featureTitle: "结构特点", feature: "头冠、龙纹与高对比色块强化了戏剧性，也让整体造型更具舞台张力。" },
+            { title: "吞口", badge: "镇宅辟邪", img: "https://hertige-nuowu.oss-cn-hangzhou.aliyuncs.com/tunkou.jpg", summary: "具有极强的门神属性，常被用来讲述傩文化中的“守护边界”。", featureTitle: "适合延展", feature: "可以与门饰、铃饰、腰带等配件联系起来，讲声音与仪式空间的关系。" },
+            { title: "布依傩面", badge: "民族纹样", img: "https://hertige-nuowu.oss-cn-hangzhou.aliyuncs.com/buyi.jpg", summary: "带有明显少数民族审美元素，是地域融合型傩面具的典型代表。", featureTitle: "文化看点", feature: "花纹、色彩与挂饰丰富，适合和服饰板块联动讲“纹样系统”。" },
+            { title: "开路神", badge: "仪式铺场", img: "https://hertige-nuowu.oss-cn-hangzhou.aliyuncs.com/nianlugou.jpg", summary: "偏喜剧功能的形象能够打破严肃氛围，帮助观众理解戏剧层次。", featureTitle: "舞台作用", feature: "通常出现在过渡与开场位置，为后续神将或核心角色作铺垫。" },
+            { title: "黑公", badge: "山林守护", img: "https://hertige-nuowu.oss-cn-hangzhou.aliyuncs.com/heigong.jpg", summary: "夸张的结构和强烈的色彩对比，适合展示地方审美差异。", featureTitle: "展示建议", feature: "可与王灵官、葛将军等角色一起呈现“威慑型神将”谱系。" },
+            { title: "麻吉摩", badge: "古朴原生", img: "https://hertige-nuowu.oss-cn-hangzhou.aliyuncs.com/majimo.jpg", summary: "保存了更古老的形态感，适合说明傩面具与原始祭仪之间的联系。", featureTitle: "历史感", feature: "木质与原始图形语言突出，给人一种接近远古祭礼的视觉印象。" },
+            { title: "葛将军", badge: "护法神将", img: "https://hertige-nuowu.oss-cn-hangzhou.aliyuncs.com/gejiangjun.jpg", summary: "常被放在神将系统中讲述护法、守坛与驱邪功能。", featureTitle: "人物定位", feature: "兼具虎面和武将特征，适合与武将服饰、护腕等强化动作感。" },
+            { title: "王灵官", badge: "威严执法", img: "https://hertige-nuowu.oss-cn-hangzhou.aliyuncs.com/wanglingguan.jpg", summary: "兼顾宗教威严与戏剧观赏性，是答辩里很容易出彩的角色。", featureTitle: "讲解亮点", feature: "三目、甲胄、法器等元素都很强，适合用来收束“神将系列”介绍。" }
+        ];
+
+        const costumeData = [
+            { title: "橙红瑞兽纹礼服", badge: "逐疫祈安", img: "https://hertige-nuowu.oss-cn-hangzhou.aliyuncs.com/chenghongruishou-costume.jpg", summary: "热烈色调适合表现火焰、神兽与节庆感，是典型的仪式型表演服饰。", featureTitle: "纹样解读", feature: "瑞兽纹和火焰感边饰强化了驱邪逐疫的主题。" },
+            { title: "黑金脸谱重工礼服", badge: "庄严礼制", img: "https://hertige-nuowu.oss-cn-hangzhou.aliyuncs.com/heijinlianpu-costume.jpg", summary: "黑金配色更适合神判、护法等厚重角色，舞台压场力很强。", featureTitle: "视觉气质", feature: "大面积深色压住舞台，金线和脸谱纹样负责提亮身份感。" },
+            { title: "红黑撞色长袍", badge: "戏剧张力", img: "https://hertige-nuowu.oss-cn-hangzhou.aliyuncs.com/hongheizhuangse-costume.jpg", summary: "适合表现武将、灵官等高冲突角色，视觉上很容易形成记忆点。", featureTitle: "动作效果", feature: "长袍下摆和袖口在转身时会形成明显的动态线条。" },
+            { title: "红白黑巫傩礼袍", badge: "古祭仪式", img: "https://hertige-nuowu.oss-cn-hangzhou.aliyuncs.com/hongbaiheiwu-costume.jpg", summary: "更偏向礼仪和祭祀氛围，适合解释傩舞的原生仪式背景。", featureTitle: "配饰建议", feature: "可搭配丝绸腰带、头饰和铜铃，让角色气质更完整。" },
+            { title: "黑金红绿脸谱华服", badge: "群像舞台", img: "https://hertige-nuowu.oss-cn-hangzhou.aliyuncs.com/heijinhonglv-costume.jpg", summary: "多色并置强调群像气氛，适合大型排场和多角色同台展示。", featureTitle: "展示价值", feature: "很适合做首页视觉主卡，能够快速表现傩戏的华丽层次。" },
+            { title: "黑红分体式礼服", badge: "现代融合", img: "https://hertige-nuowu.oss-cn-hangzhou.aliyuncs.com/heihongfenti-costume.jpg", summary: "把传统图案和现代剪裁结合，适合讲“非遗年轻化设计”。", featureTitle: "延展方向", feature: "可与 DIY 页面联动，展示传统元素如何被重新设计。" },
+            { title: "黑橙抽象脸谱大袖袍", badge: "纹样实验", img: "https://hertige-nuowu.oss-cn-hangzhou.aliyuncs.com/heichengchouxiang-costume.jpg", summary: "以抽象脸谱重组花纹，适合说明传统图案如何进入现代视觉系统。", featureTitle: "答辩话术", feature: "可以用来强调“传统元素的再设计”而不是单纯复刻。" },
+            { title: "黑橙叠层瑞兽礼袍", badge: "守护符号", img: "https://hertige-nuowu.oss-cn-hangzhou.aliyuncs.com/heichengdieceng-costume.jpg", summary: "层层叠加的纹样和结构，能突出角色威势与仪式秩序。", featureTitle: "结构亮点", feature: "外层和内层的对比很适合搭配铜铃、护腕形成完整造型。" },
+            { title: "绿金红黑复古袍服", badge: "地域融合", img: "https://hertige-nuowu.oss-cn-hangzhou.aliyuncs.com/lvjinhonghei-costume.jpg", summary: "更偏古朴色系，适合与民族纹样、地方传承脉络放在一起讲。", featureTitle: "展陈建议", feature: "搭配布依傩面和头饰效果很好，方便串成地域专题。" }
+        ];
+
+        const accessoryData = [
+            { title: "流苏耳饰", badge: "耳部配饰", img: "assets/accessories/earring.svg", summary: "用于强化角色侧脸线条和转头时的动态感，适合武将与灵官类形象。", featureTitle: "佩戴作用", feature: "耳饰会在动作中形成轻微摆动，让人物轮廓更鲜活，也更适合近景展示。", extraTitle: "替换建议", extra: "当前使用本地示意插画，后续可替换为 OSS 正式素材图。" },
+            { title: "傩冠头饰", badge: "头部配饰", img: "assets/accessories/headwear.svg", summary: "头饰承担身份识别和神性强化作用，是整套造型中最容易拉开等级差异的部分。", featureTitle: "视觉重点", feature: "头冠、羽片和珠饰的层次让角色从远景也能被快速识别。" },
+            { title: "绸缎腰带", badge: "腰部配饰", img: "assets/accessories/sash.svg", summary: "丝绸材质更容易在舞步中形成飘带效果，也能把服装层次串起来。", featureTitle: "动作表现", feature: "腰带在转身和抬手时形成弧线，强化“舞”的动势，而不只是服装补充。" },
+            { title: "铜铃挂件", badge: "声响配饰", img: "assets/accessories/bell.svg", summary: "兼具视觉和声音两种功能，是傩舞表演中很有仪式感的配饰类型。", featureTitle: "仪式意义", feature: "铜铃的声响常被用来烘托驱邪、巡场或神灵降临的氛围。" },
+            { title: "护腕绑饰", badge: "动作配饰", img: "assets/accessories/bracer.svg", summary: "强化手臂动作和武将气质，也能与武器或法器形成呼应。", featureTitle: "适配角色", feature: "更适合神将、武将或需要大幅度手势表达的表演段落。" }
+        ];
+
+        const inheritorData = [
+            { title: "刘贞祥", badge: "池州傩戏传承", img: "https://hertige-nuowu.oss-cn-hangzhou.aliyuncs.com/liuzhenxiang.jpg", summary: "长期从事傩戏表演与传承整理，是池州傩戏领域的代表性传承人。", featureTitle: "代表贡献", feature: "在剧目整理、表演教学和传统工艺保存方面都有长期积累。", extraTitle: "展示建议", extra: "适合和包公傩面、周将军等角色并置讲解地方戏系。" },
+            { title: "彭秋生", badge: "麻章傩舞传承", img: "https://hertige-nuowu.oss-cn-hangzhou.aliyuncs.com/pengqiusheng.jpg", summary: "推动傩舞从乡土仪式走向校园和公众展演，是“传播型传承人”的典型案例。", featureTitle: "传播价值", feature: "擅长把传统表演转化为更易被公众接受的展示语言。" },
+            { title: "张月福", badge: "布依族傩戏传承", img: "https://hertige-nuowu.oss-cn-hangzhou.aliyuncs.com/zhangyuefu.jpg", summary: "在民族纹样、服饰与傩戏表演的结合上非常有代表性。", featureTitle: "文化看点", feature: "布依傩戏中的面具、服饰和配饰往往比中原戏系更强调装饰层次。" },
+            { title: "杨云霞", badge: "彝族傩戏传承", img: "https://hertige-nuowu.oss-cn-hangzhou.aliyuncs.com/yangyunxia.jpg", summary: "以完整保存地方仪式流程与表演程式见长，让“活态传承”更容易被看见。", featureTitle: "研究价值", feature: "适合在答辩中强调“非遗不是静态展品，而是持续发生的文化行动”。" }
+        ];
+
+        const modal = document.getElementById("detail-modal");
+        const detailImage = document.getElementById("detail-image");
+        const detailBadge = document.getElementById("detail-badge");
+        const detailTitle = document.getElementById("detail-title");
+        const detailSummary = document.getElementById("detail-summary");
+        const detailFeatureTitle = document.getElementById("detail-feature-title");
+        const detailFeature = document.getElementById("detail-feature");
+        const detailExtraCard = document.getElementById("detail-extra-card");
+        const detailExtraTitle = document.getElementById("detail-extra-title");
+        const detailExtra = document.getElementById("detail-extra");
+
+        function createCard(item) {
+            const card = document.createElement("article");
+            card.className = "card";
+            card.innerHTML = `
+                <div class="card-media">
+                    <img src="${item.img}" alt="${item.title}">
+                </div>
+                <div class="card-body">
+                    <div class="badge">${item.badge}</div>
+                    <h3 class="card-title">${item.title}</h3>
+                    <p class="card-desc">${item.summary}</p>
+                </div>
+            `;
+            card.addEventListener("click", () => openModal(item));
+            return card;
+        }
+
+        function renderCollection(list, containerId) {
+            const container = document.getElementById(containerId);
+            list.forEach((item) => container.appendChild(createCard(item)));
+        }
+
+        function openModal(item) {
+            detailImage.src = item.img;
+            detailImage.alt = item.title;
+            detailBadge.textContent = item.badge;
+            detailTitle.textContent = item.title;
+            detailSummary.textContent = item.summary;
+            detailFeatureTitle.textContent = item.featureTitle || "文化寓意";
+            detailFeature.textContent = item.feature;
+
+            if (item.extra) {
+                detailExtraCard.classList.remove("hidden");
+                detailExtraTitle.textContent = item.extraTitle || "更多信息";
+                detailExtra.textContent = item.extra;
+            } else {
+                detailExtraCard.classList.add("hidden");
+                detailExtraTitle.textContent = "";
+                detailExtra.textContent = "";
+            }
+
+            modal.classList.add("is-open");
+            document.body.style.overflow = "hidden";
+        }
+
+        function closeModal() {
+            modal.classList.remove("is-open");
+            document.body.style.overflow = "";
+        }
+
+        function scrollToHashTarget(useSmoothScroll) {
+            const hash = window.location.hash;
+            if (!hash) {
+                return;
+            }
+
+            const target = document.querySelector(hash);
+            if (!target) {
+                return;
+            }
+
+            window.requestAnimationFrame(() => {
+                target.scrollIntoView({
+                    behavior: useSmoothScroll ? "smooth" : "auto",
+                    block: "start"
+                });
+            });
+        }
+
+        function showMainPage(options) {
+            const config = {
+                scrollToHash: true,
+                smoothScroll: false,
+                ...(options || {})
+            };
+
+            document.getElementById("home-shell").classList.add("ready");
+            document.getElementById("splash-screen").classList.add("hidden");
+            sessionStorage.setItem("nuowu_splash_seen", "1");
+
+            if (config.scrollToHash && window.location.hash) {
+                window.requestAnimationFrame(() => {
+                    window.requestAnimationFrame(() => {
+                        scrollToHashTarget(config.smoothScroll);
+                    });
+                });
+            }
+        }
+
+        renderCollection(maskData, "mask-grid");
+        renderCollection(costumeData, "costume-grid");
+        renderCollection(accessoryData, "accessory-grid");
+        renderCollection(inheritorData, "inheritor-grid");
+
+        document.getElementById("close-detail-modal").addEventListener("click", closeModal);
+        modal.addEventListener("click", (event) => {
+            if (event.target === modal) {
+                closeModal();
+            }
+        });
+
+        if (sessionStorage.getItem("nuowu_splash_seen") === "1" || window.location.hash) {
+            showMainPage({
+                scrollToHash: true,
+                smoothScroll: false
+            });
+        }
+
+        document.querySelectorAll('.sub-nav-inner a[href^="#"]').forEach((link) => {
+            link.addEventListener("click", () => {
+                if (!document.getElementById("home-shell").classList.contains("ready")) {
+                    showMainPage({
+                        scrollToHash: false,
+                        smoothScroll: false
+                    });
+                }
+
+                window.requestAnimationFrame(() => {
+                    window.requestAnimationFrame(() => {
+                        scrollToHashTarget(true);
+                    });
+                });
+            });
+        });
+
+        window.addEventListener("hashchange", () => {
+            showMainPage({
+                scrollToHash: true,
+                smoothScroll: true
+            });
+        });
+
+        document.getElementById("enter-btn").addEventListener("click", () => {
+            showMainPage({
+                scrollToHash: Boolean(window.location.hash),
+                smoothScroll: true
+            });
+        });
+    </script>
+</body>
+</html>

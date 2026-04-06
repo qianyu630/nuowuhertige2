@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>作品展示</title>
+    <link rel="stylesheet" href="assets/common.css">
+    <link rel="stylesheet" href="assets/works.css">
+    <link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+</head>
+<body data-page="works">
+    <div class="page-shell">
+        <header class="site-header">
+            <div class="nav-bar">
+                <a class="brand" href="index.html">
+                    <span class="brand-mark">傩</span>
+                    <span class="brand-text">
+                        <span class="brand-title">傩舞文化</span>
+                        <span class="brand-note">Heritage Studio</span>
+                    </span>
+                </a>
+                <nav class="primary-nav">
+                    <a href="index.html" data-nav="home">首页</a>
+                    <a href="diy.html" data-nav="diy">DIY设计</a>
+                    <a href="works.html" data-nav="works">作品展示</a>
+                    <a href="feedback.html" data-nav="feedback">留言反馈</a>
+                </nav>
+                <div class="user-actions">
+                    <a class="user-pill" href="login.html" data-user-link>登录 / 注册</a>
+                    <button class="logout-link hidden" type="button" data-logout-link>退出登录</button>
+                </div>
+            </div>
+            <div class="sub-nav">
+                <div class="sub-nav-inner">
+                    <a href="index.html#intro">文化介绍</a>
+                    <a href="index.html#mask-gallery">面具图鉴</a>
+                    <a href="index.html#costume-gallery">傩舞服饰</a>
+                    <a href="index.html#accessory-gallery">服饰配饰</a>
+                    <a href="index.html#inheritor-gallery">传承人档案</a>
+                </div>
+            </div>
+        </header>
+
+        <main class="page-main">
+            <section class="page-intro">
+                <p class="eyebrow">Works Gallery</p>
+                <h1>我的作品库</h1>
+                <p>这里汇总了当前账号保存的作品，可继续编辑、下载或提交定制制作需求。</p>
+            </section>
+
+            <section class="works-top">
+                <article class="panel stats-panel">
+                    <div class="metric-row" id="work-metrics"></div>
+                </article>
+            </section>
+
+            <section class="section-block" style="padding-top: 2rem;">
+                <div class="section-head">
+                    <p class="eyebrow">Gallery</p>
+                    <h2 class="section-title">作品展示</h2>
+                    <p class="section-desc">点击“继续编辑”会跳回创作页面并自动载入当前作品；“定制制作”可提交实体制作需求。</p>
+                </div>
+                <div class="empty-state hidden" id="empty-state">
+                    <p>你还没有保存作品，先去创作一张专属傩作吧。</p>
+                    <div class="btn-row" style="justify-content: center;">
+                        <a class="btn" href="diy.html">前往 DIY 设计</a>
+                    </div>
+                </div>
+                <div class="grid card-grid" id="works-grid"></div>
+            </section>
+        </main>
+
+        <footer class="site-footer">
+            作品展示 · 继续编辑、下载与定制制作
+        </footer>
+    </div>
+
+    <div class="modal" id="custom-modal">
+        <div class="modal-panel custom-modal-panel">
+            <button class="modal-close" type="button" id="close-custom-modal">×</button>
+            <div class="modal-layout modal-single">
+                <div class="modal-body">
+                    <div class="badge">定制制作 / 3D 打印</div>
+                    <h3 class="modal-title">提交定制需求</h3>
+                    <p class="muted-text">填写姓名、联系方式和想要的制作方式，我们会把当前作品信息一起提交。页面继续使用纯前端可部署的 Formsubmit 表单。</p>
+                    <form action="https://formsubmit.co/2479161761@qq.com" method="POST" target="_blank" id="custom-form">
+                        <div class="field-group">
+                            <label class="field-label" for="custom-name">姓名</label>
+                            <input class="field-input" id="custom-name" name="name" type="text" required placeholder="请输入姓名">
+                        </div>
+                        <div class="field-group">
+                            <label class="field-label" for="custom-contact">联系方式</label>
+                            <input class="field-input" id="custom-contact" name="contact" type="text" required placeholder="手机号 / 微信 / 邮箱">
+                        </div>
+                        <div class="field-group">
+                            <label class="field-label" for="custom-need">定制需求</label>
+                            <textarea class="field-textarea" id="custom-need" name="message" required placeholder="例如：希望做成 3D 打印面具摆件，保留红金配色。"></textarea>
+                        </div>
+                        <input type="hidden" name="_subject" value="【傩舞文化】新的定制制作需求">
+                        <input type="hidden" name="_template" value="table">
+                        <input type="hidden" name="_captcha" value="false">
+                        <input type="hidden" name="work_title" id="custom-work-title">
+                        <input type="hidden" name="work_id" id="custom-work-id">
+                        <input type="hidden" name="designer" id="custom-designer">
+                        <input type="hidden" name="prompt" id="custom-prompt">
+                        <div class="btn-row">
+                            <button class="btn" type="submit"><i class="fa-regular fa-paper-plane"></i> 提交需求</button>
+                            <button class="btn-secondary" id="cancel-custom-btn" type="button">取消</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="assets/common.js"></script>
+    <script src="assets/works.js"></script>
+</body>
+</html>

@@ -1,0 +1,46 @@
+.works-top {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(320px, 0.9fr);
+    gap: 1.5rem;
+}
+
+.stats-panel,
+.sync-panel {
+    padding: 1.5rem;
+}
+
+.sync-output {
+    min-height: 150px;
+    font-family: "Consolas", "Courier New", monospace;
+    font-size: 0.9rem;
+    line-height: 1.6;
+}
+
+.work-thumb {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.work-card {
+    overflow: hidden;
+}
+
+.work-prompt {
+    font-size: 0.92rem;
+    color: rgba(248, 240, 227, 0.68);
+}
+
+.custom-modal-panel {
+    width: min(760px, 100%);
+}
+
+.modal-single {
+    grid-template-columns: 1fr;
+}
+
+@media (max-width: 980px) {
+    .works-top {
+        grid-template-columns: 1fr;
+    }
+}
